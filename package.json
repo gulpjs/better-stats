@@ -19,7 +19,9 @@
     "pretest": "npm run lint",
     "test": "lab -cv"
   },
-  "dependencies": {},
+  "dependencies": {
+    "stat-mode": "^0.2.1"
+  },
   "devDependencies": {
     "code": "^1.4.1",
     "eslint": "^1.7.3",
