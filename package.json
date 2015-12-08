@@ -1,6 +1,6 @@
 {
   "name": "better-stats",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A replacement for node's fs.Stats with more utility",
   "author": "Gulp Team <team@gulpjs.com> (http://gulpjs.com/)",
   "contributors": [],
