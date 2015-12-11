@@ -16,6 +16,31 @@ function isValidDate(date) {
   return date instanceof Date && !isNaN(date.valueOf());
 }
 
+function normalizeStats(stats){
+  var now = new Date();
+
+  if (!isValidDate(stats.mtime)) {
+    stats.mtime = now;
+  }
+
+  if (!isValidDate(stats.atime)) {
+    stats.atime = stats.mtime;
+  }
+
+  if (!isValidDate(stats.ctime)) {
+    stats.ctime = stats.mtime;
+  }
+
+  if (!isValidDate(stats.birthtime)) {
+    if (stats.ctime <= stats.atime) {
+      stats.birthtime = stats.ctime;
+    } else {
+      // atime was articifially set before last ctime
+      stats.birthtime = stats.atime;
+    }
+  }
+}
+
 function Stats(opts) {
   this.dev = opts.dev;
   this.nlink = opts.nlink;
@@ -39,23 +64,14 @@ function Stats(opts) {
   });
   this.mode = opts.mode;
 
-  // Guarantee dates are valid
   this.atime = new Date(opts.atime);
-  if (!isValidDate(this.atime)) {
-    this.atime = new Date();
-  }
   this.mtime = new Date(opts.mtime);
-  if (!isValidDate(this.mtime)) {
-    this.mtime = new Date();
-  }
+  // TODO: read-only?
   this.ctime = new Date(opts.ctime);
-  if (!isValidDate(this.ctime)) {
-    this.ctime = new Date();
-  }
+  // TODO: read-only?
   this.birthtime = new Date(opts.birthtime);
-  if (!isValidDate(this.birthtime)) {
-    this.birthtime = new Date();
-  }
+  // Guarantee dates are valid
+  normalizeStats(this);
 }
 
 isTypeMethods.forEach(function(method){
